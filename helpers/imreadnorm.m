@@ -6,7 +6,7 @@ function [ im ] = imreadnorm( filename )
 A = double(imread(filename));
 A_max = max(A(:));
 A_min = min(A(:));
-A = (A - A_min) / A_max;
+A = (A - A_min) / (A_max - A_min);
 
 im = A;
 
