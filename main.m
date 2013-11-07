@@ -2,6 +2,7 @@
 
 % clear the screen and environment
 clc
+close all
 clear all
 
 % add the folder helpers to the path so we can access the function
@@ -16,6 +17,3 @@ txt = 'B2F5D2d1d1';
 print(txt);
 print('content', txt);
 print('content', txt, ':\n');
-
-% Display 
-displayimages(im1s,im1s)
