@@ -1,12 +1,18 @@
 % Script calling the tnm034 functions
 
+% clear the screen and environment
 clc
 clear all
+
+% add the folder helpers to the path so we can access the function
 addpath helpers
 
-A = imreadnorm('Images_Training/im1s.jpg');
-img1_txt = tnm034(A);
+% read and process 'im1s'
+im1s = imreadnorm('Images_Training/im1s.jpg');
+im1s_txt = tnm034(im1s);
 
-print('img1_txt', img1_txt);
-print(img1_txt);
-print('img1_txt', img1_txt, ':\n');
+% example use of print
+txt = 'B2F5D2d1d1';
+print(txt);
+print('content', txt);
+print('content', txt, ':\n');
