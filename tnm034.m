@@ -35,16 +35,9 @@ imshow(BW);
 %end
 
 %find the notes in the image
-notes = findNotes(Im_BW);
+notes = findNotes(BW);
 
 
-%figure
-%imshow(blurred);
-%figure
-%imshow(Im_BW);
-%figure
-%imshow(C);
-%imshow(R);
 
 strout = notes;
 end

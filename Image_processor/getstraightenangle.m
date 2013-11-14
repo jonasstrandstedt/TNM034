@@ -15,7 +15,7 @@ tempangle = T(peaks(2));
 
 
 
-angle = tempangle-90*sign(tempangle)
+angle = tempangle-90*sign(tempangle);
 
 end
 
