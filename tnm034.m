@@ -37,6 +37,10 @@ for i=1:x
     R(i,1:rowsum) = ones(1, rowsum);
 end
 
+%find the notes in the image
+notes = findNotes(Im_BW);
+
+
 %figure
 %imshow(blurred);
 %figure
@@ -46,6 +50,6 @@ end
 figure
 imshow(R);
 
-strout = 'TEST';
+strout = notes;
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%% 
