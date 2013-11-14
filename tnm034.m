@@ -22,9 +22,12 @@ BW = 1-BW;
 %
 angle = getstraightenangle(BW);
 BW = imrotate(BW,angle,'bicubic','crop');
+BWT = im2bw(BW, 0.1);
 % Rotate BW
 figure
 imshow(BW);
+figure
+imshow(BWT);
 
 
 %create black image and project the intensities to the left.

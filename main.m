@@ -7,6 +7,7 @@ clear all
 
 % add the folder helpers to the path so we can access the function
 addpath helpers
+addpath Image_processor
 
 % read and process 'im1s'
 im1s = imreadnorm('Images_Training/im1s.jpg');
