@@ -37,8 +37,24 @@ for i=1:x
     R(i,1:rowsum) = ones(1, rowsum);
 end
 
-%find the notes in the image
-notes = findNotes(Im_BW);
+%separate the staffs
+staff = staffDivision(Im);
+bajs = size(staff);
+kul = bajs(3);
+notes = '';
+for i=1:kul
+    %figure
+    %imshow(staff(:,:,i))
+    %find the notes in the image
+    morenotes = findNotes(staff(:,:,i));
+    notes = strcat(notes,'----------------------', morenotes);
+
+end
+% figure
+% imshow(bw2)
+
+
+
 
 
 %figure
@@ -47,8 +63,8 @@ notes = findNotes(Im_BW);
 %imshow(Im_BW);
 %figure
 %imshow(C);
-figure
-imshow(R);
+%figure
+%imshow(R);
 
 strout = notes;
 end

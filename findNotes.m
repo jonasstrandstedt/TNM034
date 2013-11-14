@@ -1,4 +1,4 @@
-function [notes] = findNotes( bw)
+function [notes] = findNotes(bw)
 %findNotes
 %loads the template image, finds the correlation for the template and the 
 %bwimage, locates centroids for the found notes and classifies the notes.
@@ -23,11 +23,11 @@ L = bwlabel(C,4);
 
 stats = regionprops(L,'centroid');
 centroids = cat(1, stats.Centroid);
-%plot (centroids(:,1),centroids(:,2),'b*')
-%hold off
+% plot (centroids(:,1),centroids(:,2),'b*')
+% hold off
 
 y_centroids = centroids(:,2);
-notes = 'n';
+notes = '';
 length = size(y_centroids,1);
 
 for i = 1:length
