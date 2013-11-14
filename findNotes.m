@@ -12,9 +12,9 @@ template = 1-template;
 C = normxcorr2(template, bw);
 C = im2bw(C, 0.6);
 
-%figure
-%imshow(C);
-%hold on
+% figure
+% imshow(C);
+% hold on
 
 C = bwmorph(C, 'dilate', 2);
 
@@ -22,7 +22,7 @@ L = bwlabel(C,4);
 
 
 stats = regionprops(L,'centroid');
-centroids = cat(1, stats.Centroid)
+centroids = cat(1, stats.Centroid);
 %plot (centroids(:,1),centroids(:,2),'b*')
 %hold off
 
@@ -32,21 +32,21 @@ length = size(y_centroids,1);
 
 for i = 1:length
    if y_centroids(i)<55
-       notes = strcat(notes,'G2');
+       notes = strcat(notes,'G3');
    elseif y_centroids(i) <60
-           notes = strcat(notes,'F2');
+           notes = strcat(notes,'F3');
    elseif y_centroids(i) <64
-           notes = strcat(notes,'E2');
+           notes = strcat(notes,'E3');
    elseif y_centroids(i) <69
-           notes = strcat(notes,'D2');
+           notes = strcat(notes,'D3');
    elseif y_centroids(i) <74
-           notes = strcat(notes,'C2');
+           notes = strcat(notes,'C3');
    elseif y_centroids(i) <78
-           notes = strcat(notes,'B1');
+           notes = strcat(notes,'B2');
    elseif y_centroids(i) <83
-           notes = strcat(notes,'A1');
+           notes = strcat(notes,'A2');
    elseif y_centroids(i) <88
-           notes = strcat(notes,'G1');
+           notes = strcat(notes,'G2');
    else 
            notes = strcat(notes,'-');
 end
