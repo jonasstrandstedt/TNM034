@@ -11,6 +11,7 @@ addpath Image_processor
 
 % read and process 'im1s'
 im1s = imreadnorm('Images_Training/im1s.jpg');
+
 im1s_txt = tnm034(im1s);
 
 % example use of print
@@ -20,4 +21,4 @@ im1s_txt = tnm034(im1s);
 % print('content', txt, ':\n');
 
 %print the notes
-print(im1s_txt);
+print('notes',im1s_txt,':\n');

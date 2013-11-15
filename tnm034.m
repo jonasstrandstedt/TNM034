@@ -28,11 +28,8 @@ BW2 = im2bw(grayscale, level);
 
 
 BWT = im2bw(BW, 0.1);
-% Rotate BW
-%figure
-%imshow(BW2);
-%figure
-%imshow(BWT);
+
+Imrot = imrotate(Im,angle,'bicubic','crop');
 
 
 %create black image and project the intensities to the left.
@@ -41,11 +38,36 @@ BWT = im2bw(BW, 0.1);
 %    rowsum = sum(C(i,:));
 %    R(i,1:rowsum) = ones(1, rowsum);
 %end
+%separate the staffs and also find the y-positions for the stafflines
+[staff,linepositions]= staffDivision(Imrot);
+staffsize = size(staff);
+numberofstaffs = staffsize(3);
+notes = '';
 
-%find the notes in the image
-notes = findNotes(BWT);
+%linepositions
+
+for i=1:numberofstaffs
+    %figure
+    %imshow(staff(:,:,i))
+    %find the notes in the image
+    morenotes = findNotes(staff(:,:,i), linepositions(:,i));
+    notes = strcat(notes,'n', morenotes);
+
+end
+% figure
+% imshow(bw2)
 
 
+
+
+%figure
+%imshow(blurred);
+%figure
+%imshow(Im_BW);
+%figure
+%imshow(C);
+%figure
+%imshow(R);
 
 strout = notes;
 end

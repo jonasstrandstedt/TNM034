@@ -9,12 +9,12 @@ opened = bwmorph(thin, 'open');
 partsearch = opened;
 
 partsearch = bwmorph(partsearch, 'close', Inf);
-figure
-imshow(partsearch)
+%figure
+%imshow(partsearch)
 partsearch = bwmorph(partsearch, 'thin', Inf);
-figure
-imshow(partsearch)
-hold on
+%figure
+%imshow(partsearch)
+%hold on
 
 [sizex sizey] = size(centroids);
 
@@ -30,15 +30,13 @@ for i=1:sizex
     y = cy - linedistance;
     dx = linedistance;
     dy = -4*linedistance;
-    
-    
-    
+        
     noteblock = partsearch(y+dy:y, x:x+dx);
     noteblock_sum = sum(noteblock(:));
     
     if noteblock_sum > sum_limit
        dubblebar_centroids = [dubblebar_centroids i];
-       plotalphablock(x, y ,dx, dy, 'r');
+       %plotalphablock(x, y ,dx, dy, 'r');
        continue;
     end
     
@@ -51,7 +49,7 @@ for i=1:sizex
     noteblock_sum = sum(noteblock(:));
     if noteblock_sum > sum_limit
        dubblebar_centroids = [dubblebar_centroids i];
-       plotalphablock(x, y ,dx, dy, 'b');
+       %plotalphablock(x, y ,dx, dy, 'b');
        continue;
     end
     
@@ -64,7 +62,7 @@ for i=1:sizex
     noteblock_sum = sum(noteblock(:));
     if noteblock_sum > sum_limit
        dubblebar_centroids = [dubblebar_centroids i];
-         plotalphablock(x, y ,dx, dy, 'g');
+         %plotalphablock(x, y ,dx, dy, 'g');
         continue;
     end
     
@@ -78,7 +76,7 @@ for i=1:sizex
     
     if noteblock_sum > sum_limit
        dubblebar_centroids = [dubblebar_centroids i];
-        plotalphablock(x, y ,dx, dy);
+        %plotalphablock(x, y ,dx, dy);
         continue;
     end
 end
