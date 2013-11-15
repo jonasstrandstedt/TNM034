@@ -39,9 +39,9 @@ rowsum = rowsum/max(rowsum);
 % image)
 [peaks, locations] = findpeaks(rowsum, 'MINPEAKHEIGHT', 0.4);
 
-%plot(rowsum,'Color','blue');
-%hold on;
-%plot(locations,rowsum(locations),'k^','markerfacecolor',[1 0 0]);
+% plot(rowsum,'Color','blue');
+% hold on;
+% plot(locations,rowsum(locations),'k^','markerfacecolor',[1 0 0]);
 
 sizebw = size(bw);
 sx = sizebw(1);
@@ -50,11 +50,9 @@ sy = sizebw(2);
 
 startline = 0;
 peakno = zeros(size(locations),1);
-locsize = size(locations);
-locx = locsize(1);
 n=1;
 
-while startline<locx-1
+while startline<numel(locations)-1
     linedistance = zeros(4,1);
     for i=1:4
         linedistance(i) = locations(startline+i+1) - locations(startline+i);
@@ -78,18 +76,18 @@ while startline<locx-1
     
 end
 
-% calculate the cut distance, for cropping the first staff from the
-% original image
+%delete the zeros from the peakindices
 
-for i = 1:size(peakno)
+for i = 1:numel(peakno)
     if peakno(i) == 0
         peakno=peakno(1:i-1);
     end
 end
 
-ps = size(peakno);
-n = ps(1)/5;
-
+% calculate the cut distance, for cropping the first staff from the
+% original image
+n = numel(peakno)/5;
+cutdistance = zeros(n-1,1);
 for i = 1:n-1
     cutdistance(i)= (locations(peakno(i*5+1))+locations(peakno(i*5)))/2;
 
@@ -97,23 +95,24 @@ end
 
 %lull is the empty space over and under the staffs
 lull = cutdistance(1) - locations(5);
+finalcut = zeros(n+2,1);
 
-finalcut(1) = locations(1)-lull;
+finalcut(1) = locations(peakno(1))-lull;
 
 for i = 1:n-1
     finalcut(i+1) = cutdistance(i);
 end
-finalcut(n+1) = locations(n*5) + lull;
-    
+finalcut(n+1) = locations(peakno(n*5)) + lull;
+
 
 sx = finalcut(2)-finalcut(1)+30;
 staff = ones(sx,sy,n);
-size(staff);
+
 
 % crop off the staffs
 for i = 1:n
-    h= finalcut(i+1) - finalcut(i);
-    staff(1:h,1:sy,i) = bw(finalcut(i)+1:finalcut(i+1),1:sy);
+    h= finalcut(i+1) - finalcut(i)
+    staff(1:h,1:sy,i) = bw((finalcut(i)+1):finalcut(i+1),1:sy);
 end
 
 end

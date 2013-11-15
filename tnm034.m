@@ -23,11 +23,14 @@ BW = 1-BW;
 angle = getstraightenangle(BW);
 BW = imrotate(BW,angle,'bicubic','crop');
 BWT = im2bw(BW, 0.1);
+
+Imrot = imrotate(Im,angle,'bicubic','crop');
+
 % Rotate BW
-figure
-imshow(BW);
-figure
-imshow(BWT);
+% figure
+% imshow(BW);
+% figure
+% imshow(BWT);
 
 
 %create black image and project the intensities to the left.
@@ -38,7 +41,7 @@ imshow(BWT);
 %end
 
 %separate the staffs
-staff = staffDivision(Im);
+staff = staffDivision(Imrot);
 staffsize = size(staff);
 numberofstaffs = staffsize(3);
 notes = '';
