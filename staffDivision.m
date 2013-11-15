@@ -37,23 +37,21 @@ rowsum = rowsum/max(rowsum);
 
 % find the peaks of the projection (and plot to compare with original
 % image)
-[peaks, locations] = findpeaks(rowsum, 'MINPEAKHEIGHT', 0.4)
+[peaks, locations] = findpeaks(rowsum, 'MINPEAKHEIGHT', 0.4);
 
-plot(rowsum,'Color','blue');
-hold on;
-plot(locations,rowsum(locations),'k^','markerfacecolor',[1 0 0]);
+%plot(rowsum,'Color','blue');
+%hold on;
+%plot(locations,rowsum(locations),'k^','markerfacecolor',[1 0 0]);
 
 sizebw = size(bw);
 sx = sizebw(1);
 sy = sizebw(2);
 
 
-
-run = true;
 startline = 0;
 peakno = zeros(size(locations),1);
 locsize = size(locations);
-locx = locsize(1)
+locx = locsize(1);
 n=1;
 
 while startline<locx-1
@@ -61,8 +59,7 @@ while startline<locx-1
     for i=1:4
         linedistance(i) = locations(startline+i+1) - locations(startline+i);
     end
-    linedistance
-    meandistance = (sum(linedistance))/4
+    meandistance = (sum(linedistance))/4;
     for i=1:4
         if (linedistance(i)>meandistance-1 &&linedistance(i)<meandistance+1)
             peakno(n)=startline+i;
@@ -90,32 +87,32 @@ for i = 1:size(peakno)
     end
 end
 
-ps = size(peakno)
-n = ps(1)/5
+ps = size(peakno);
+n = ps(1)/5;
 
-peakno
 for i = 1:n-1
     cutdistance(i)= (locations(peakno(i*5+1))+locations(peakno(i*5)))/2;
 
 end
 
+%lull is the empty space over and under the staffs
 lull = cutdistance(1) - locations(5);
 
 finalcut(1) = locations(1)-lull;
+
 for i = 1:n-1
     finalcut(i+1) = cutdistance(i);
 end
 finalcut(n+1) = locations(n*5) + lull;
-finalcut
     
 
-sx = finalcut(2)-finalcut(1)+30
+sx = finalcut(2)-finalcut(1)+30;
 staff = ones(sx,sy,n);
-size(staff)
+size(staff);
 
-% crop off the first staff
+% crop off the staffs
 for i = 1:n
-    h= finalcut(i+1) - finalcut(i)
+    h= finalcut(i+1) - finalcut(i);
     staff(1:h,1:sy,i) = bw(finalcut(i)+1:finalcut(i+1),1:sy);
 end
 

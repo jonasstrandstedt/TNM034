@@ -39,15 +39,16 @@ end
 
 %separate the staffs
 staff = staffDivision(Im);
-bajs = size(staff);
-kul = bajs(3);
+staffsize = size(staff);
+numberofstaffs = staffsize(3);
 notes = '';
-for i=1:kul
-    %figure
-    %imshow(staff(:,:,i))
+
+for i=1:numberofstaffs
+    figure
+    imshow(staff(:,:,i))
     %find the notes in the image
     morenotes = findNotes(staff(:,:,i));
-    notes = strcat(notes,'----------------------', morenotes);
+    notes = strcat(notes,'n', morenotes);
 
 end
 % figure
