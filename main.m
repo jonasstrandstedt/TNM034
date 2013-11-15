@@ -7,9 +7,11 @@ clear all
 
 % add the folder helpers to the path so we can access the function
 addpath helpers
+addpath Image_processor
 
 % read and process 'im1s'
-im1s = imreadnorm('Images_Training/im1s_rotated.jpg');
+im1s = imreadnorm('Images_Training/im1s.jpg');
+
 im1s_txt = tnm034(im1s);
 
 % example use of print
