@@ -4,27 +4,56 @@ function [notes] = findNotes( bw)
 %bwimage, locates centroids for the found notes and classifies the notes.
 %output is a string with the notes. input is a black and white image.
 
+linedistance = 10;
+linethickness = linedistance/ 5;
+thin = bwmorph(bw, 'thin');
+opened = bwmorph(thin, 'open');
+partsearch = opened;
+%opened = bwmorph(opened, 'thin');
+%figure
+%imshow(thin)
+%figure
+%imshow(opened)
+%figure
+%imshow(opened)
+
 template = imread('template1.png');
 level = graythresh(template);
 template = im2bw(template,level);
 template = 1-template;
 
-C = normxcorr2(template, bw);
-C = im2bw(C, 0.6);
+C1 = normxcorr2(template, opened);
+level = graythresh(C1);
+C = im2bw(C1, 0.6);
 
-% figure
-% imshow(C);
-% hold on
+%figure
+%imshow(C1);
 
 C = bwmorph(C, 'dilate', 2);
 
+%L = logical(C,4);
 L = bwlabel(C,4);
 
 
 stats = regionprops(L,'centroid');
 centroids = cat(1, stats.Centroid);
-%plot (centroids(:,1),centroids(:,2),'b*')
+
+
+centroids_to_remove = getdoublebarnotes(bw, centroids);
+
+centroidsx = centroids(:,1);
+centroidsy = centroids(:,2);
+centroidsx(centroids_to_remove) = [];
+centroidsy(centroids_to_remove) = [];
+
+centroids = [centroidsx centroidsy];
+
+plot (centroids(:,1),centroids(:,2),'b*')
+%plot (centroids(i,1),centroids(i,2),'r*')
 %hold off
+
+%figure
+%imshow(noteblock)
 
 y_centroids = centroids(:,2);
 notes = 'n';

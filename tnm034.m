@@ -9,6 +9,7 @@ function strout = tnm034(Im)
 % Your program code? 
 
 
+
 % make grayscale image and get size
 grayscale = rgb2gray(Im);
 [x y]=size(grayscale);
@@ -22,12 +23,16 @@ BW = 1-BW;
 %
 angle = getstraightenangle(BW);
 BW = imrotate(BW,angle,'bicubic','crop');
+grayscale = imrotate(grayscale,angle,'bilinear','crop');
+BW2 = im2bw(grayscale, level);
+
+
 BWT = im2bw(BW, 0.1);
 % Rotate BW
-figure
-imshow(BW);
-figure
-imshow(BWT);
+%figure
+%imshow(BW2);
+%figure
+%imshow(BWT);
 
 
 %create black image and project the intensities to the left.
@@ -38,7 +43,7 @@ imshow(BWT);
 %end
 
 %find the notes in the image
-notes = findNotes(BW);
+notes = findNotes(BWT);
 
 
 
