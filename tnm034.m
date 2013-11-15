@@ -40,17 +40,19 @@ Imrot = imrotate(Im,angle,'bicubic','crop');
 %    R(i,1:rowsum) = ones(1, rowsum);
 %end
 
-%separate the staffs
-staff = staffDivision(Imrot);
+%separate the staffs and also find the y-positions for the stafflines
+[staff,linepositions]= staffDivision(Imrot);
 staffsize = size(staff);
 numberofstaffs = staffsize(3);
 notes = '';
+
+%linepositions
 
 for i=1:numberofstaffs
     figure
     imshow(staff(:,:,i))
     %find the notes in the image
-    morenotes = findNotes(staff(:,:,i));
+    morenotes = findNotes(staff(:,:,i), linepositions(:,i));
     notes = strcat(notes,'n', morenotes);
 
 end
