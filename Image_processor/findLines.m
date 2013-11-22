@@ -1,25 +1,17 @@
-function [ outlocations ] = findLines( gray )
+function [ outlocations ] = findLines( bw )
 %FINDLINES Summary of this function goes here
-%   Detailed explanation goes here
-
-% gauss filter
-gauss =  fspecial('gaussian', 5, 0.9);
+%   bw: input image is black and white and "straightened"
+%   outlocations: a vector with y-coordinates for the staff lines
 
 % line detection filter (notes disappear)
 kernel = [ -1 -1 -1; 2 2 2; -1 -1 -1] / 9;
 
-% make grayscale image and get size
-[x y]=size(gray);
+% get size of bw
+[x y]=size(bw);
 
-% blur the grayscale image
-blurred = conv2(gray,gauss,'same');
-
-% threshold and invert the image
-Im_BW = im2bw(gray, 0.8);
-Im_BW = 1-Im_BW;
 
 % use the line detection kernel
-C = conv2(Im_BW,kernel);
+C = conv2(bw,kernel);
 C = im2bw(C, 0.3);
 
 % create black image and project the intensities to the left.
@@ -35,11 +27,11 @@ rowsum = rowsum/max(rowsum);
 
 % find the peaks of the projection (and plot to compare with original
 % image)
-[peaks, locations] = findpeaks(rowsum, 'MINPEAKHEIGHT', 0.4);
+[peaks, locations] = findpeaks(rowsum, 'MINPEAKHEIGHT', 0.3);
 
-% plot(rowsum,'Color','blue');
-% hold on;
-% plot(locations,rowsum(locations),'k^','markerfacecolor',[1 0 0]);
+%  plot(rowsum,'Color','blue');
+%  hold on;
+%  plot(locations,rowsum(locations),'k^','markerfacecolor',[1 0 0]);
 
 
 startline = 0;

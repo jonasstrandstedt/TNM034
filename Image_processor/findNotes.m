@@ -1,10 +1,12 @@
 function [notes] = findNotes(im, linelocations)
 %findNotes
+%   im: input image is a "straightened" rgb image with one staff
+%   linelocations: input vector containing the y-coords for each staffline
+%   notes: output string containing the notes in the image
+% 
 %loads the template image, finds the correlation for the template and the 
-%bwimage, locates centroids for the found notes and classifies the notes.
-%output is a string with the notes. input is a black and white image.
+%image, locates centroids for the found notes and classifies the notes.
 
-%grayscale = rgb2gray(im);
 level = graythresh(im);
 bw = im2bw(im, level);
 
@@ -12,13 +14,7 @@ bw = 1-bw;
 thin = bwmorph(bw, 'thin');
 opened = bwmorph(thin, 'open');
 
-%opened = bwmorph(opened, 'thin');
-%figure
-%imshow(thin)
-%figure
-%imshow(opened)
-%figure
-%imshow(opened)
+
 space = (linelocations(2)-linelocations(1))/2;
 
 template = imread('template1.png');
@@ -29,7 +25,7 @@ template = imresize(template,[2*space NaN]);
 [tempx, tempy] = size(template);
 
 
-bwinv = opened; %opened or bw??
+bwinv = bw; %opened or bw??
 [rows cols] = size(bwinv);
 padding = 100;
 bwinv = [zeros(padding,cols); bwinv; zeros(padding,cols)];
@@ -50,17 +46,16 @@ L = bwlabel(C,4);
 stats = regionprops(L,'centroid');
 centroids = cat(1, stats.Centroid);
 
-%compensation for dislocation of the centroids
-centroids(:,1) = centroids(:,1)-tempx*0.5;
-centroids(:,2) = centroids(:,2)-tempy*0.15;
-
 
 centroids_to_remove = getdoublebarnotes(bwinv, centroids);
 centroidsx = centroids(:,1);
 centroidsy = centroids(:,2);
+
 centroidsx(centroids_to_remove) = [];
 centroidsy(centroids_to_remove) = [];
 centroids = [centroidsx centroidsy];
+
+
 
 figure
 imshow(bwinv)
@@ -68,6 +63,7 @@ hold on
 plot (centroids(:,1),centroids(:,2),'b*')
 plot (50,linelocations(:,1), 'r*');
 hold off
+
 
 %figure
 %imshow(noteblock)

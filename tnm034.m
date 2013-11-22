@@ -20,6 +20,16 @@ BW = im2bw(grayscale, level);
 %inverterar bilden
 BW = 1-BW;
 
+
+%TEST FREDAG
+BW08 = im2bw(grayscale, 0.8);
+BW08 = 1-BW08;
+angle = getstraightenangle(BW08);
+BW08rot = imrotate(BW08,angle,'bicubic','crop');
+figure
+imshow(BW08rot);
+%--TEST FREDAG
+
 %
 angle = getstraightenangle(BW);
 BW = imrotate(BW,angle,'bicubic','crop');
@@ -39,7 +49,9 @@ Imrot = imrotate(Im,angle,'bicubic','crop');
 %    R(i,1:rowsum) = ones(1, rowsum);
 %end
 %separate the staffs and also find the y-positions for the stafflines
-[staff,linepositions]= staffDivision(Imrot);
+
+
+[staff,linepositions]= staffDivision(Imrot, BW08rot);%testar skicka in BW8rot
 staffsize = size(staff);
 numberofstaffs = staffsize(3);
 notes = '';
@@ -47,8 +59,8 @@ notes = '';
 %linepositions
 
 for i=1:numberofstaffs
-    figure
-    imshow(staff(:,:,i))
+    %figure
+    %imshow(staff(:,:,i))
     %find the notes in the image
     morenotes = findNotes(staff(:,:,i), linepositions(:,i));
     notes = strcat(notes,'n', morenotes);
