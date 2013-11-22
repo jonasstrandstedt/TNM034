@@ -9,8 +9,6 @@ level = graythresh(im);
 bw = im2bw(im, level);
 
 bw = 1-bw;
-linedistance = 10;
-linethickness = linedistance/ 5;
 thin = bwmorph(bw, 'thin');
 opened = bwmorph(thin, 'open');
 
@@ -28,10 +26,10 @@ level = graythresh(template);
 template = im2bw(template,level);
 template = 1-template;
 template = imresize(template,[2*space NaN]); 
+[tempx, tempy] = size(template);
 
 
-
-bwinv = bw;
+bwinv = opened; %opened or bw??
 [rows cols] = size(bwinv);
 padding = 100;
 bwinv = [zeros(padding,cols); bwinv; zeros(padding,cols)];
@@ -52,6 +50,10 @@ L = bwlabel(C,4);
 stats = regionprops(L,'centroid');
 centroids = cat(1, stats.Centroid);
 
+%compensation for dislocation of the centroids
+centroids(:,1) = centroids(:,1)-tempx*0.5;
+centroids(:,2) = centroids(:,2)-tempy*0.15;
+
 
 centroids_to_remove = getdoublebarnotes(bwinv, centroids);
 centroidsx = centroids(:,1);
@@ -60,11 +62,12 @@ centroidsx(centroids_to_remove) = [];
 centroidsy(centroids_to_remove) = [];
 centroids = [centroidsx centroidsy];
 
-%figure
-%imshow(bwinv)
-%hold on
-%plot (centroids(:,1),centroids(:,2),'b*')
-%hold off
+figure
+imshow(bwinv)
+hold on
+plot (centroids(:,1),centroids(:,2),'b*')
+plot (50,linelocations(:,1), 'r*');
+hold off
 
 %figure
 %imshow(noteblock)

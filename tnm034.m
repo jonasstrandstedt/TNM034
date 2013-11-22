@@ -47,8 +47,8 @@ notes = '';
 %linepositions
 
 for i=1:numberofstaffs
-    %figure
-    %imshow(staff(:,:,i))
+    figure
+    imshow(staff(:,:,i))
     %find the notes in the image
     morenotes = findNotes(staff(:,:,i), linepositions(:,i));
     notes = strcat(notes,'n', morenotes);
