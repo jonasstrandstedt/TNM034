@@ -20,6 +20,18 @@ BW = im2bw(grayscale, level);
 %inverterar bilden
 BW = 1-BW;
 
+
+%TEST FREDAG
+BW08 = im2bw(grayscale, 0.8);
+BW08 = 1-BW08;
+angle = getstraightenangle(BW08);
+BW08 = 1-BW08;
+BW08rot = imrotate(BW08,angle,'bicubic','crop');
+BW08rot = 1-BW08rot;
+%figure
+%imshow(BW08rot);
+%--TEST FREDAG
+
 %
 angle = getstraightenangle(BW);
 BW = imrotate(BW,angle,'bicubic','crop');
@@ -32,6 +44,8 @@ BWT = im2bw(BW, 0.1);
 Imrot = imrotate(Im,angle,'bicubic','crop');
 
 
+
+
 %create black image and project the intensities to the left.
 %R = zeros(x,y);
 %for i=1:x
@@ -39,7 +53,9 @@ Imrot = imrotate(Im,angle,'bicubic','crop');
 %    R(i,1:rowsum) = ones(1, rowsum);
 %end
 %separate the staffs and also find the y-positions for the stafflines
-[staff,linepositions]= staffDivision(Imrot);
+
+
+[staff,linepositions]= staffDivision(Imrot, BW08rot);%testar skicka in BW8rot
 staffsize = size(staff);
 numberofstaffs = staffsize(3);
 notes = '';
