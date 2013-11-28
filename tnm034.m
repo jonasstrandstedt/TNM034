@@ -25,7 +25,9 @@ BW = 1-BW;
 BW08 = im2bw(grayscale, 0.8);
 BW08 = 1-BW08;
 angle = getstraightenangle(BW08);
+BW08 = 1-BW08;
 BW08rot = imrotate(BW08,angle,'bicubic','crop');
+BW08rot = 1-BW08rot;
 figure
 imshow(BW08rot);
 %--TEST FREDAG
@@ -40,6 +42,8 @@ BW2 = im2bw(grayscale, level);
 BWT = im2bw(BW, 0.1);
 
 Imrot = imrotate(Im,angle,'bicubic','crop');
+
+
 
 
 %create black image and project the intensities to the left.

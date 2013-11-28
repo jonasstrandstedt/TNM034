@@ -10,7 +10,7 @@ function [notes] = findNotes(im, linelocations)
 level = graythresh(im);
 bw = im2bw(im, level);
 
-bw = 1-bw;
+bwinv = 1-bw;
 thin = bwmorph(bw, 'thin');
 opened = bwmorph(thin, 'open');
 
@@ -25,9 +25,11 @@ template = imresize(template,[2*space NaN]);
 [tempx, tempy] = size(template);
 
 
-bwinv = bw; %opened or bw??
+%bwinv = bw; %opened or bw??
 [rows cols] = size(bwinv);
 padding = 100;
+%compensating for white edge after rotating the image
+bwinv(:, 1:10) = 0;
 bwinv = [zeros(padding,cols); bwinv; zeros(padding,cols)];
 linelocations = linelocations+ padding;
 
@@ -47,6 +49,33 @@ stats = regionprops(L,'centroid');
 centroids = cat(1, stats.Centroid);
 
 
+%% g-clef removal
+% create black image and project the intensities to the left.
+
+[x y] = size(bwinv); 
+R = zeros(x,y);
+columnsum = zeros(x,1);
+for i=1:x
+    columnsum(i) = sum(bwinv(:,i));
+    R(1:floor(columnsum(i)),i) = ones(floor(columnsum(i)),1);
+end
+
+% normalize
+columnsum = columnsum/max(columnsum);
+
+% find the peaks of the projection
+[peaks, locations] = findpeaks(columnsum, 'MINPEAKHEIGHT', 0.3);
+
+
+px = locations(1,1);
+c1 = centroids(1,:);
+
+% check if the first centroid is the g-clef and ifso, remove it
+if (c1(1) - px) < (12*space)
+    centroids(1,:)= [];
+end
+%% remove 1/16 notes
+
 centroids_to_remove = getdoublebarnotes(bwinv, centroids);
 centroidsx = centroids(:,1);
 centroidsy = centroids(:,2);
@@ -55,14 +84,14 @@ centroidsx(centroids_to_remove) = [];
 centroidsy(centroids_to_remove) = [];
 centroids = [centroidsx centroidsy];
 
+%% classify notes
 
-
-figure
-imshow(bwinv)
-hold on
-plot (centroids(:,1),centroids(:,2),'b*')
-plot (50,linelocations(:,1), 'r*');
-hold off
+% figure
+% imshow(bwinv)
+% hold on
+% plot (centroids(:,1),centroids(:,2),'b*')
+% plot (50,linelocations(:,1), 'r*');
+% hold off
 
 
 %figure
