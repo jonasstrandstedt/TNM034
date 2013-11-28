@@ -9,10 +9,7 @@ level = graythresh(im);
 bw = im2bw(im, level);
 
 bw = 1-bw;
-linedistance = 10;
-linethickness = linedistance/ 5;
 thin = bwmorph(bw, 'thin');
-opened = bwmorph(thin, 'open');
 
 %opened = bwmorph(opened, 'thin');
 %figure
@@ -53,12 +50,9 @@ stats = regionprops(L,'centroid');
 centroids = cat(1, stats.Centroid);
 
 
-centroids_to_remove = getdoublebarnotes(bwinv, centroids);
-centroidsx = centroids(:,1);
-centroidsy = centroids(:,2);
-centroidsx(centroids_to_remove) = [];
-centroidsy(centroids_to_remove) = [];
-centroids = [centroidsx centroidsy];
+[singlar, centroids_to_remove] = getdoublebarnotes(bwinv, centroids,linelocations);
+
+centroids = removeindices(centroids, centroids_to_remove);
 
 %figure
 %imshow(bwinv)

@@ -1,85 +1,148 @@
-function [ dubblebar_centroids] = getdoublebarnotes(BW, centroids)
+function [ singlebar_centroids, dubblebar_centroids] = getdoublebarnotes(BW, centroids, linelocations)
 %UNTITLED3 Summary of this function goes here
 %Detailed explanation goes here
 
-linedistance = 10;
-linethickness = linedistance/ 5;
+debug = true;
+linedistance = 8;
+
 thin = bwmorph(BW, 'thin');
-opened = bwmorph(thin, 'open');
-partsearch = opened;
+thin = bwareaopen(thin, 40);
+thin = removelines(thin, 'horizontal', 2, linelocations);
+thin = removelines(thin, 'vertical', 1);
 
-partsearch = bwmorph(partsearch, 'close', Inf);
-%figure
-%imshow(partsearch)
-partsearch = bwmorph(partsearch, 'thin', Inf);
-%figure
-%imshow(partsearch)
-%hold on
+skel = bwareaopen(thin, 40);
 
-[sizex sizey] = size(centroids);
 
-dubblebar_centroids = [];
-for i=1:sizex
+skel = removelines(skel, 'horizontal');
+
+partsearch =  skel;
+
+
+if debug
+    figure
+    imshow(partsearch)
+    hold on
+end
+
+centroidsize = size(centroids);
+plot (centroids(:,1),centroids(:,2),'b*')
+
+singlebar_centroids = zeros(centroidsize(1),1);
+dubblebar_centroids = zeros(centroidsize(1),1);
+for i=1:centroidsize(1)
     
-    cx = round(centroids(i,1));
-    cy = round(centroids(i,2));
-    sum_limit = 12;
+    cx = int16(round(centroids(i,1)));
+    cy = int16(round(centroids(i,2)));
     
     % UP RIGHT
-    x = cx;
-    y = cy - linedistance;
-    dx = linedistance;
-    dy = -4*linedistance;
-        
+    [x, y, dx, dy] = createsearchblock(cx, cy, linedistance, 'up','right');
     noteblock = partsearch(y+dy:y, x:x+dx);
-    noteblock_sum = sum(noteblock(:));
-    
-    if noteblock_sum > sum_limit
-       dubblebar_centroids = [dubblebar_centroids i];
-       %plotalphablock(x, y ,dx, dy, 'r');
-       continue;
+    num_bars = countbars(noteblock);
+    if num_bars > 1
+        dubblebar_centroids(i) = i;
+        if debug
+            plotalphablock(x, y ,dx, dy, 'r');
+        end
+        continue;
     end
     
     % UP LEFT
-    x = cx - linethickness;
-    y = cy - linedistance;
-    dx = -linedistance;
-    dy = -4*linedistance;
+    [x, y, dx, dy] = createsearchblock(cx, cy, linedistance, 'up','left');
     noteblock = partsearch(y+dy:y, x+dx:x);
-    noteblock_sum = sum(noteblock(:));
-    if noteblock_sum > sum_limit
-       dubblebar_centroids = [dubblebar_centroids i];
-       %plotalphablock(x, y ,dx, dy, 'b');
-       continue;
+    num_bars = countbars(noteblock);
+    if num_bars > 1
+        dubblebar_centroids(i) = i;
+        if debug
+            plotalphablock(x, y ,dx, dy, 'r');
+        end
+        continue;
     end
     
     % DOWN RIGHT
-    x = cx- linedistance;
-    y = cy +linethickness;
-    dx = linedistance;
-    dy = 4*linedistance;
+    [x, y, dx, dy] = createsearchblock(cx, cy, linedistance, 'down','right');
     noteblock = partsearch(y:y+dy, x:x+dx);
-    noteblock_sum = sum(noteblock(:));
-    if noteblock_sum > sum_limit
-       dubblebar_centroids = [dubblebar_centroids i];
-         %plotalphablock(x, y ,dx, dy, 'g');
+    num_bars = countbars(noteblock);
+    if num_bars > 1
+        dubblebar_centroids(i) = i;
+        if debug
+            plotalphablock(x, y ,dx, dy, 'r');
+        end
         continue;
     end
     
     % DOWN LEFT
-    x = cx - linedistance - linethickness;
-    y = cy + linethickness;
-    dx = -linedistance;
-    dy = 4*linedistance;
+    [x, y, dx, dy] = createsearchblock(cx, cy, linedistance, 'down','left');
     noteblock = partsearch(y:y+dy, x+dx:x);
-    noteblock_sum = sum(noteblock(:));
-    
-    if noteblock_sum > sum_limit
-       dubblebar_centroids = [dubblebar_centroids i];
-        %plotalphablock(x, y ,dx, dy);
+    num_bars = countbars(noteblock);
+    if num_bars > 1
+        dubblebar_centroids(i) = i;
+        if debug
+            plotalphablock(x, y ,dx, dy, 'r');
+        end
         continue;
     end
 end
 
+% remove double
+centroids = removeindices(centroids, dubblebar_centroids);
+
+centroidsize = size(centroids);
+for i=1:centroidsize(1)
+    
+    cx = int16(round(centroids(i,1)));
+    cy = int16(round(centroids(i,2)));
+    
+    % UP RIGHT
+    [x, y, dx, dy] = createsearchblock(cx, cy, linedistance, 'up','right');
+    noteblock = partsearch(y+dy:y, x:x+dx);
+    num_bars = countbars(noteblock);
+    if num_bars == 1
+        singlebar_centroids(i) = i;
+        if debug
+            plotalphablock(x, y ,dx, dy, 'g');
+        end
+        continue;
+    end
+    
+    % UP LEFT
+    [x, y, dx, dy] = createsearchblock(cx, cy, linedistance, 'up','left');
+    noteblock = partsearch(y+dy:y, x+dx:x);
+    num_bars = countbars(noteblock);
+    if num_bars == 1
+        singlebar_centroids(i) = i;
+        if debug
+            plotalphablock(x, y ,dx, dy, 'g');
+        end
+        continue;
+    end
+    
+    % DOWN RIGHT
+    [x, y, dx, dy] = createsearchblock(cx, cy, linedistance, 'down','right');
+    noteblock = partsearch(y:y+dy, x:x+dx);
+    num_bars = countbars(noteblock);
+    if num_bars == 1
+        singlebar_centroids(i) = i;
+        if debug
+            plotalphablock(x, y ,dx, dy, 'g');
+        end
+        continue;
+    end
+    
+    % DOWN LEFT
+    [x, y, dx, dy] = createsearchblock(cx, cy, linedistance, 'down','left');
+    noteblock = partsearch(y:y+dy, x+dx:x);
+    num_bars = countbars(noteblock);
+    if num_bars == 1
+        singlebar_centroids(i) = i;
+        if debug
+            plotalphablock(x, y ,dx, dy, 'g');
+        end
+        continue;
+    end
+end
+
+
+pause
+close all
 end
 
