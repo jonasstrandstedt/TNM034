@@ -97,56 +97,111 @@ centroids = [centroidsx centroidsy];
 %figure
 %imshow(noteblock)
 
+%dummie data
+eighths= [1 2 3 4 5 6 7 8 9 10 11 12];
+
 y_centroids = centroids(:,2);
 notes = '';
 length = size(y_centroids,1);
 
+counter = 1;
 
 for i = 1:length
-    if y_centroids(i) <(linelocations(1)-5*space)
-           notes = strcat(notes,'E4');
-   elseif y_centroids(i) <(linelocations(1)-4*space)
-           notes = strcat(notes,'D4');
-   elseif y_centroids(i) <(linelocations(1)-3*space)
-           notes = strcat(notes,'C4');
-   elseif y_centroids(i) <(linelocations(1)-2*space)
-           notes = strcat(notes,'B3');
-   elseif y_centroids(i) <(linelocations(1)-space)
-           notes = strcat(notes,'A3');
-   elseif y_centroids(i)<(linelocations(1))
-           notes = strcat(notes,'G3');
-   elseif y_centroids(i) <(linelocations(1)+space)
-           notes = strcat(notes,'F3');
-   elseif y_centroids(i) <(linelocations(2))
-           notes = strcat(notes,'E3');
-   elseif y_centroids(i) <(linelocations(2)+space)
-           notes = strcat(notes,'D3');
-   elseif y_centroids(i) <(linelocations(3))
-           notes = strcat(notes,'C3');
-   elseif y_centroids(i) <(linelocations(3)+space)
-           notes = strcat(notes,'B2');
-   elseif y_centroids(i) <(linelocations(4))
-           notes = strcat(notes,'A2');
-   elseif y_centroids(i)<(linelocations(4)+space)
-           notes = strcat(notes,'G2');
-   elseif y_centroids(i) <linelocations(5)
-           notes = strcat(notes,'F2');
-   elseif y_centroids(i) <(linelocations(5)+space)
-           notes = strcat(notes,'E2');
-   elseif y_centroids(i) <(linelocations(5)+2*space)
-           notes = strcat(notes,'D2');
-   elseif y_centroids(i) <(linelocations(5)+3*space)
-           notes = strcat(notes,'C2');
-   elseif y_centroids(i) <(linelocations(5)+4*space)
-           notes = strcat(notes,'B1');
-   elseif y_centroids(i) <(linelocations(5)+5*space)
-           notes = strcat(notes,'A1'); 
-   elseif y_centroids(i) <(linelocations(5)+6*space)
-           notes = strcat(notes,'G1');
-   else 
+    if i == eighths(counter)
+       if(counter < numel(eighths))
+           counter=counter+1;
+       end
+       if y_centroids(i) <(linelocations(1)-5*space)
+           notes = strcat(notes,'e4');
+       elseif y_centroids(i) <(linelocations(1)-4*space)
+               notes = strcat(notes,'d4');
+       elseif y_centroids(i) <(linelocations(1)-3*space)
+               notes = strcat(notes,'c4');
+       elseif y_centroids(i) <(linelocations(1)-2*space)
+               notes = strcat(notes,'b3');
+       elseif y_centroids(i) <(linelocations(1)-space)
+               notes = strcat(notes,'a3');
+       elseif y_centroids(i)<(linelocations(1))
+               notes = strcat(notes,'g3');
+       elseif y_centroids(i) <(linelocations(1)+space)
+               notes = strcat(notes,'f3');
+       elseif y_centroids(i) <(linelocations(2))
+               notes = strcat(notes,'e3');
+       elseif y_centroids(i) <(linelocations(2)+space)
+               notes = strcat(notes,'d3');
+       elseif y_centroids(i) <(linelocations(3))
+               notes = strcat(notes,'c3');
+       elseif y_centroids(i) <(linelocations(3)+space)
+               notes = strcat(notes,'b2');
+       elseif y_centroids(i) <(linelocations(4))
+               notes = strcat(notes,'a2');
+       elseif y_centroids(i)<(linelocations(4)+space)
+               notes = strcat(notes,'g2');
+       elseif y_centroids(i) <linelocations(5)
+               notes = strcat(notes,'f2');
+       elseif y_centroids(i) <(linelocations(5)+space)
+               notes = strcat(notes,'e2');
+       elseif y_centroids(i) <(linelocations(5)+2*space)
+               notes = strcat(notes,'d2');
+       elseif y_centroids(i) <(linelocations(5)+3*space)
+               notes = strcat(notes,'c2');
+       elseif y_centroids(i) <(linelocations(5)+4*space)
+               notes = strcat(notes,'b1');
+       elseif y_centroids(i) <(linelocations(5)+5*space)
+               notes = strcat(notes,'a1'); 
+       elseif y_centroids(i) <(linelocations(5)+6*space)
+               notes = strcat(notes,'g1');
+       else 
            notes = strcat(notes,'-');
+       end
+       
+    else
+       if y_centroids(i) <(linelocations(1)-5*space)
+               notes = strcat(notes,'E4');
+       elseif y_centroids(i) <(linelocations(1)-4*space)
+               notes = strcat(notes,'D4');
+       elseif y_centroids(i) <(linelocations(1)-3*space)
+               notes = strcat(notes,'C4');
+       elseif y_centroids(i) <(linelocations(1)-2*space)
+               notes = strcat(notes,'B3');
+       elseif y_centroids(i) <(linelocations(1)-space)
+               notes = strcat(notes,'A3');
+       elseif y_centroids(i)<(linelocations(1))
+               notes = strcat(notes,'G3');
+       elseif y_centroids(i) <(linelocations(1)+space)
+               notes = strcat(notes,'F3');
+       elseif y_centroids(i) <(linelocations(2))
+               notes = strcat(notes,'E3');
+       elseif y_centroids(i) <(linelocations(2)+space)
+               notes = strcat(notes,'D3');
+       elseif y_centroids(i) <(linelocations(3))
+               notes = strcat(notes,'C3');
+       elseif y_centroids(i) <(linelocations(3)+space)
+               notes = strcat(notes,'B2');
+       elseif y_centroids(i) <(linelocations(4))
+               notes = strcat(notes,'A2');
+       elseif y_centroids(i)<(linelocations(4)+space)
+               notes = strcat(notes,'G2');
+       elseif y_centroids(i) <linelocations(5)
+               notes = strcat(notes,'F2');
+       elseif y_centroids(i) <(linelocations(5)+space)
+               notes = strcat(notes,'E2');
+       elseif y_centroids(i) <(linelocations(5)+2*space)
+               notes = strcat(notes,'D2');
+       elseif y_centroids(i) <(linelocations(5)+3*space)
+               notes = strcat(notes,'C2');
+       elseif y_centroids(i) <(linelocations(5)+4*space)
+               notes = strcat(notes,'B1');
+       elseif y_centroids(i) <(linelocations(5)+5*space)
+               notes = strcat(notes,'A1'); 
+       elseif y_centroids(i) <(linelocations(5)+6*space)
+               notes = strcat(notes,'G1');
+       else 
+               notes = strcat(notes,'-');
+               
+       end
+   end
 end
-
 
 end
 
