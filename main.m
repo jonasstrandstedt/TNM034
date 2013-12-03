@@ -11,7 +11,7 @@ addpath helpers
 addpath Image_processor
 
 % read and process 'im1s'
-im1s = imreadnorm('Images_Training/im1s.jpg');
+im1s = imreadnorm('Images_Training/im8s.jpg');
 
 im1s_txt = tnm034(im1s);
 
