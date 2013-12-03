@@ -53,7 +53,7 @@ for i = 1:n
     h = cutunder(i) - cutover(i);
     staff(1:h+1,1:sy,i) = Im(cutover(i):cutunder(i),1:sy);
     bwstaffsout(1:h+1,1:sy,i) = bwstaffs(cutover(i):cutunder(i),1:sy);
-    linepositions(:,i) = findLines(bwstaffsout(1:h+1,1:sy,i))
+    linepositions(:,i) = findLines(bwstaffsout(1:h+1,1:sy,i));
 
 end
 

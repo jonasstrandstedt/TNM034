@@ -3,12 +3,12 @@ function [ outlocations ] = findLines( bw )
 %   bw: input image is black and white and "straightened"
 %   outlocations: a vector with y-coordinates for the staff lines
 
+debug = false;
 % line detection filter (notes disappear)
 kernel = [ -1 -1 -1; 2 2 2; -1 -1 -1] / 9;
 
 % get size of bw
 [x y]=size(bw);
-
 
 % use the line detection kernel
 C = conv2(bw,kernel);
@@ -27,27 +27,33 @@ rowsum = rowsum/max(rowsum);
 
 % find the peaks of the projection (and plot to compare with original
 % image)
+
+%figure
+%imshow(bw)
 [peaks, locations] = findpeaks(rowsum, 'MINPEAKHEIGHT', 0.3);
 
- plot(rowsum,'Color','blue');
- hold on;
- plot(locations,rowsum(locations),'k^','markerfacecolor',[1 0 0]);
-
+if debug == true
+    figure
+    plot(rowsum,'Color','blue');
+    hold on;
+    plot(locations,rowsum(locations),'k^','markerfacecolor',[1 0 0]);
+    hold off;
+end
 
 startline = 0;
 [x y] = size(locations);
 peakno = zeros(x,1);
 n=1;
 
-locations
+
 while startline<numel(locations)-1
     linedistance = zeros(4,1);
     for i=1:4
-        linedistance(i) = locations(startline+i+1) - locations(startline+i)
+        linedistance(i) = locations(startline+i+1) - locations(startline+i);
     end
     meandistance = (sum(linedistance))/4;
     for i=1:4
-        if (linedistance(i)>meandistance-1 &&linedistance(i)<meandistance+1)
+        if (linedistance(i)>meandistance/5 &&linedistance(i)<meandistance*1.5)
             peakno(n)=startline+i;
             n=n+1;
             if i==4
@@ -79,10 +85,8 @@ for i = 1:numel(peakno)
 end
 
 
-figure
-imshow(bw);
-hold on
-plot(50, outlocations(:,1), 'r*');
+%hold on
+%plot(50, outlocations(:,1), 'r*');
 
 %  figure
 %  plot(rowsum,'Color','blue');

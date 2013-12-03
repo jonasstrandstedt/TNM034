@@ -19,26 +19,15 @@ BW = im2bw(grayscale, level);
 
 %inverterar bilden
 BW = 1-BW;
-figure
-imshow(BW)
+%figure
+%imshow(BW)
 
 %TEST FREDAG
 BW08 = im2bw(grayscale, 0.8);
 BW08 = 1-BW08;
 angle = getstraightenangle(BW08)
-%BW08 = 1-BW08;
+
 BW08rot = imrotate(BW08,angle,'bicubic','crop');
-
-
-%BW08rot = 1-BW08rot;
-%figure
-%imshow(BW08rot);
-%figure
-
-BW08rot = 1-BW08rot;
-%figure
-%imshow(BW08rot);
-
 
 %--TEST FREDAG
 
@@ -53,7 +42,11 @@ BWT = im2bw(BW, 0.1);
 
 Imrot = imrotate(Im,angle,'bicubic','crop');
 
-
+%compensating for white edge after rotating the image
+[rows, columns] = size(BW08rot);
+BW08rot(1:10, :) = 0;
+BW08rot(rows-10:rows, :) = 0;
+BW08rot(:, 1:10) = 0;
 
 
 %create black image and project the intensities to the left.

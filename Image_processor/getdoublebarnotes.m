@@ -2,7 +2,7 @@ function [ singlebar_centroids, doublebar_centroids] = getdoublebarnotes(BW, cen
 %UNTITLED3 Summary of this function goes here
 %Detailed explanation goes here
 
-debug = true;
+debug = false;
 linedistance = 8;
 
 thin = bwmorph(BW, 'thin');
@@ -16,9 +16,6 @@ skel = bwareaopen(thin, 40);
 skel = removelines(skel, 'horizontal');
 
 partsearch =  skel;
-figure
-imshow(partsearch)
-
 
 if debug
     figure
@@ -27,7 +24,7 @@ if debug
 end
 
 centroidsize = size(centroids);
-plot (centroids(:,1),centroids(:,2),'b*')
+%plot (centroids(:,1),centroids(:,2),'b*')
 
 singlebar_centroids = zeros(centroidsize(1),1);
 doublebar_centroids = zeros(centroidsize(1),1);
@@ -43,7 +40,7 @@ for i=1:centroidsize(1)
     if num_bars > 1
         doublebar_centroids(i) = i;
         if debug
-            plotalphablock(x, y ,dx, dy, 'r');
+            %plotalphablock(x, y ,dx, dy, 'r');
         end
         continue;
     end
@@ -55,7 +52,7 @@ for i=1:centroidsize(1)
     if num_bars > 1
         doublebar_centroids(i) = i;
         if debug
-            plotalphablock(x, y ,dx, dy, 'r');
+           % plotalphablock(x, y ,dx, dy, 'r');
         end
         continue;
     end
@@ -67,7 +64,7 @@ for i=1:centroidsize(1)
     if num_bars > 1
         doublebar_centroids(i) = i;
         if debug
-            plotalphablock(x, y ,dx, dy, 'r');
+            %plotalphablock(x, y ,dx, dy, 'r');
         end
         continue;
     end
@@ -79,7 +76,7 @@ for i=1:centroidsize(1)
     if num_bars > 1
         doublebar_centroids(i) = i;
         if debug
-            plotalphablock(x, y ,dx, dy, 'r');
+           % plotalphablock(x, y ,dx, dy, 'r');
         end
         continue;
     end
@@ -101,7 +98,7 @@ for i=1:centroidsize(1)
     if num_bars == 1
         singlebar_centroids(i) = i;
         if debug
-            plotalphablock(x, y ,dx, dy, 'g');
+            %plotalphablock(x, y ,dx, dy, 'g');
         end
         continue;
     end
@@ -113,7 +110,7 @@ for i=1:centroidsize(1)
     if num_bars == 1
         singlebar_centroids(i) = i;
         if debug
-            plotalphablock(x, y ,dx, dy, 'g');
+           % plotalphablock(x, y ,dx, dy, 'g');
         end
         continue;
     end
@@ -125,7 +122,7 @@ for i=1:centroidsize(1)
     if num_bars == 1
         singlebar_centroids(i) = i;
         if debug
-            plotalphablock(x, y ,dx, dy, 'g');
+            %plotalphablock(x, y ,dx, dy, 'g');
         end
         continue;
     end
@@ -137,14 +134,14 @@ for i=1:centroidsize(1)
     if num_bars == 1
         singlebar_centroids(i) = i;
         if debug
-            plotalphablock(x, y ,dx, dy, 'g');
+            %plotalphablock(x, y ,dx, dy, 'g');
         end
         continue;
     end
 end
 
 
-pause
-close all
+%pause
+%close all
 end
 

@@ -6,6 +6,7 @@ function [notes] = findNotes(im, linelocations)
 % 
 %loads the template image, finds the correlation for the template and the 
 %image, locates centroids for the found notes and classifies the notes.
+debug = true;
 
 level = graythresh(im);
 bw = im2bw(im, level);
@@ -23,12 +24,13 @@ template = 1-template;
 template = imresize(template,[2*space NaN]); 
 [tempx, tempy] = size(template);
 
+%figure
+%imshow(bwinv)
 
 %bwinv = bw; %opened or bw??
 [rows cols] = size(bwinv);
-padding = 100;
-%compensating for white edge after rotating the image
-bwinv(:, 1:10) = 0;
+padding = 200;
+
 bwinv = [zeros(padding,cols); bwinv; zeros(padding,cols)];
 linelocations = linelocations+ padding;
 
@@ -81,12 +83,14 @@ centroids = removeindices(centroids, centroids_to_remove);
 
 %% classify notes
 
-% figure
-% imshow(bwinv)
-% hold on
-% plot (centroids(:,1),centroids(:,2),'b*')
-% plot (50,linelocations(:,1), 'r*');
-% hold off
+if debug == true
+    figure
+    imshow(bwinv)
+    hold on
+    plot (centroids(:,1),centroids(:,2),'b*')
+    plot (50,linelocations(:,1), 'r*');
+    hold off
+end
 
 
 %figure
