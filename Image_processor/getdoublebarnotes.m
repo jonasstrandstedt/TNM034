@@ -1,4 +1,4 @@
-function [ singlebar_centroids, dubblebar_centroids] = getdoublebarnotes(BW, centroids, linelocations)
+function [ singlebar_centroids, doublebar_centroids] = getdoublebarnotes(BW, centroids, linelocations)
 %UNTITLED3 Summary of this function goes here
 %Detailed explanation goes here
 
@@ -16,6 +16,8 @@ skel = bwareaopen(thin, 40);
 skel = removelines(skel, 'horizontal');
 
 partsearch =  skel;
+figure
+imshow(partsearch)
 
 
 if debug
@@ -28,7 +30,7 @@ centroidsize = size(centroids);
 plot (centroids(:,1),centroids(:,2),'b*')
 
 singlebar_centroids = zeros(centroidsize(1),1);
-dubblebar_centroids = zeros(centroidsize(1),1);
+doublebar_centroids = zeros(centroidsize(1),1);
 for i=1:centroidsize(1)
     
     cx = int16(round(centroids(i,1)));
@@ -39,7 +41,7 @@ for i=1:centroidsize(1)
     noteblock = partsearch(y+dy:y, x:x+dx);
     num_bars = countbars(noteblock);
     if num_bars > 1
-        dubblebar_centroids(i) = i;
+        doublebar_centroids(i) = i;
         if debug
             plotalphablock(x, y ,dx, dy, 'r');
         end
@@ -51,7 +53,7 @@ for i=1:centroidsize(1)
     noteblock = partsearch(y+dy:y, x+dx:x);
     num_bars = countbars(noteblock);
     if num_bars > 1
-        dubblebar_centroids(i) = i;
+        doublebar_centroids(i) = i;
         if debug
             plotalphablock(x, y ,dx, dy, 'r');
         end
@@ -63,7 +65,7 @@ for i=1:centroidsize(1)
     noteblock = partsearch(y:y+dy, x:x+dx);
     num_bars = countbars(noteblock);
     if num_bars > 1
-        dubblebar_centroids(i) = i;
+        doublebar_centroids(i) = i;
         if debug
             plotalphablock(x, y ,dx, dy, 'r');
         end
@@ -75,7 +77,7 @@ for i=1:centroidsize(1)
     noteblock = partsearch(y:y+dy, x+dx:x);
     num_bars = countbars(noteblock);
     if num_bars > 1
-        dubblebar_centroids(i) = i;
+        doublebar_centroids(i) = i;
         if debug
             plotalphablock(x, y ,dx, dy, 'r');
         end
@@ -84,7 +86,7 @@ for i=1:centroidsize(1)
 end
 
 % remove double
-centroids = removeindices(centroids, dubblebar_centroids);
+centroids = removeindices(centroids, doublebar_centroids);
 
 centroidsize = size(centroids);
 for i=1:centroidsize(1)

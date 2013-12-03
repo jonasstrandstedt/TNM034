@@ -76,7 +76,7 @@ if (c1(1) - px) < (12*space)
 end
 %% remove 1/16 notes
 
-centroids_to_remove = getdoublebarnotes(bwinv, centroids,linelocations);
+[eighths, centroids_to_remove] = getdoublebarnotes(bwinv, centroids,linelocations);
 centroids = removeindices(centroids, centroids_to_remove);
 
 %% classify notes
