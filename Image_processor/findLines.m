@@ -3,7 +3,11 @@ function [ outlocations ] = findLines( bw )
 %   bw: input image is black and white and "straightened"
 %   outlocations: a vector with y-coordinates for the staff lines
 
+
+%% Settings
 debug = false;
+
+%% The rest, needs tagging
 % line detection filter (notes disappear)
 kernel = [ -1 -1 -1; 2 2 2; -1 -1 -1] / 9;
 
@@ -32,7 +36,7 @@ rowsum = rowsum/max(rowsum);
 %imshow(bw)
 [peaks, locations] = findpeaks(rowsum, 'MINPEAKHEIGHT', 0.3);
 
-if debug == true
+if debug
     figure
     plot(rowsum,'Color','blue');
     hold on;

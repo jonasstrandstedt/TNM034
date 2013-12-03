@@ -12,7 +12,6 @@ outlocations = findLines(BW);
 
 %save the size for Im
 sizeIm = size(Im);
-sx = sizeIm(1);
 sy = sizeIm(2);
 
 % calculate the cut distance, for cropping the first staff from the
@@ -45,7 +44,6 @@ bwstaffsout = ones(sx,sy,n);
 graystaffs =rgb2gray(Im);
 bwstaffs = im2bw(graystaffs, 0.8);
 bwstaffs = 1-bwstaffs;
-
 
 
 % crop off the staffs and find the positions of the stafflines

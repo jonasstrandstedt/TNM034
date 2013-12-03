@@ -2,34 +2,42 @@ function [ singlebar_centroids, doublebar_centroids] = getdoublebarnotes(BW, cen
 %UNTITLED3 Summary of this function goes here
 %Detailed explanation goes here
 
+%% Settings
 debug = false;
 linedistance = 8;
+padding = 100;
 
+%% Preparations
+centroidsize = size(centroids);
+singlebar_centroids = zeros(centroidsize(1),1);
+doublebar_centroids = zeros(centroidsize(1),1);
+
+%% Preprocessing
 thin = bwmorph(BW, 'thin');
 thin = bwareaopen(thin, 40);
 thin = removelines(thin, 'horizontal', 2, linelocations);
 thin = removelines(thin, 'vertical', 1);
 
 skel = bwareaopen(thin, 40);
-
-
 skel = removelines(skel, 'horizontal');
-
 partsearch =  skel;
 
+%% Add padding to the partsearch image so we dont search outside the image
+partsearchsize = size(partsearch);
+partsearch = [zeros(padding,partsearchsize(2)); partsearch; zeros(padding,partsearchsize(2))];
+partsearchsize = size(partsearch);
+partsearch = [zeros(partsearchsize(1),padding), partsearch, zeros(partsearchsize(1), padding)];
+centroids = centroids + padding;
+
+%% DEBUGGING
 if debug
-    figure
-    imshow(partsearch)
-    hold on
+    debugimage(partsearch,'Doublebarnotes partsearch', @()plot (centroids(:,1),centroids(:,2),'b*'));
 end
 
-centroidsize = size(centroids);
-%plot (centroids(:,1),centroids(:,2),'b*')
-
-singlebar_centroids = zeros(centroidsize(1),1);
-doublebar_centroids = zeros(centroidsize(1),1);
+%% More than one bar search
 for i=1:centroidsize(1)
     
+    clc
     cx = int16(round(centroids(i,1)));
     cy = int16(round(centroids(i,2)));
     
@@ -84,8 +92,9 @@ end
 
 % remove double
 centroids = removeindices(centroids, doublebar_centroids);
-
 centroidsize = size(centroids);
+
+%% One bar search
 for i=1:centroidsize(1)
     
     cx = int16(round(centroids(i,1)));
@@ -140,8 +149,10 @@ for i=1:centroidsize(1)
     end
 end
 
-
-%pause
-%close all
+%% DEBUGGING
+if debug
+    pause
+    close all
 end
 
+end
