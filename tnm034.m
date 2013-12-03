@@ -19,17 +19,19 @@ BW = im2bw(grayscale, level);
 
 %inverterar bilden
 BW = 1-BW;
-
+figure
+imshow(BW)
 
 %TEST FREDAG
 BW08 = im2bw(grayscale, 0.8);
 BW08 = 1-BW08;
-angle = getstraightenangle(BW08);
-BW08 = 1-BW08;
+angle = getstraightenangle(BW08)
+%BW08 = 1-BW08;
 BW08rot = imrotate(BW08,angle,'bicubic','crop');
-BW08rot = 1-BW08rot;
+%BW08rot = 1-BW08rot;
 figure
 imshow(BW08rot);
+figure
 %--TEST FREDAG
 
 %

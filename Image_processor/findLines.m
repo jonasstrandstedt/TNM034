@@ -29,9 +29,9 @@ rowsum = rowsum/max(rowsum);
 % image)
 [peaks, locations] = findpeaks(rowsum, 'MINPEAKHEIGHT', 0.3);
 
-%  plot(rowsum,'Color','blue');
-%  hold on;
-%  plot(locations,rowsum(locations),'k^','markerfacecolor',[1 0 0]);
+ plot(rowsum,'Color','blue');
+ hold on;
+ plot(locations,rowsum(locations),'k^','markerfacecolor',[1 0 0]);
 
 
 startline = 0;
@@ -39,10 +39,11 @@ startline = 0;
 peakno = zeros(x,1);
 n=1;
 
+locations
 while startline<numel(locations)-1
     linedistance = zeros(4,1);
     for i=1:4
-        linedistance(i) = locations(startline+i+1) - locations(startline+i);
+        linedistance(i) = locations(startline+i+1) - locations(startline+i)
     end
     meandistance = (sum(linedistance))/4;
     for i=1:4
@@ -76,6 +77,18 @@ outlocations = zeros(numel(peakno),1);
 for i = 1:numel(peakno)
     outlocations(i) = locations(peakno(i));
 end
+
+
+figure
+imshow(bw);
+hold on
+plot(50, outlocations(:,1), 'r*');
+
+%  figure
+%  plot(rowsum,'Color','blue');
+%  hold on;
+%  plot(outlocations,rowsum(outlocations),'k^','markerfacecolor',[1 0 0]);
+
 
 end
 
