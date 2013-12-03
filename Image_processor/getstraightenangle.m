@@ -4,18 +4,20 @@ function [ angle] = getstraightenangle( BW )
 % im Is BW, 
 % output is angle in degrees.
 
-thetaResolution = 0.1;
+thetaResolution = 0.01;
 rhoResolution = 1;
 
-[H, T, R]  = hough(BW, 'RhoResolution',rhoResolution, 'Theta',-90:thetaResolution:89);
- 
+BW = bwmorph(BW, 'thin', Inf);
+BW = imrotate(BW, 90, 'bicubic','crop');
+[H, T, R]  = hough(BW, 'RhoResolution',rhoResolution, 'Theta',-10:thetaResolution:10);
+
+% for h is for vizualization.
+%h = H/max(max(H));
+
 peaks = houghpeaks(H);
 
-tempangle = T(peaks(2));
+angle = T(peaks(2));
 
-
-
-angle = tempangle-90*sign(tempangle);
 
 end
 
