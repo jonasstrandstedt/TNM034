@@ -12,7 +12,6 @@ bw = im2bw(im, level);
 
 bwinv = 1-bw;
 thin = bwmorph(bw, 'thin');
-opened = bwmorph(thin, 'open');
 
 
 space = (linelocations(2)-linelocations(1))/2;
@@ -49,6 +48,7 @@ stats = regionprops(L,'centroid');
 centroids = cat(1, stats.Centroid);
 
 
+
 %% g-clef removal
 % create black image and project the intensities to the left.
 
@@ -76,13 +76,8 @@ if (c1(1) - px) < (12*space)
 end
 %% remove 1/16 notes
 
-centroids_to_remove = getdoublebarnotes(bwinv, centroids);
-centroidsx = centroids(:,1);
-centroidsy = centroids(:,2);
-
-centroidsx(centroids_to_remove) = [];
-centroidsy(centroids_to_remove) = [];
-centroids = [centroidsx centroidsy];
+centroids_to_remove = getdoublebarnotes(bwinv, centroids,linelocations);
+centroids = removeindices(centroids, centroids_to_remove);
 
 %% classify notes
 

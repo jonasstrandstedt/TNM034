@@ -28,10 +28,18 @@ BW08 = 1-BW08;
 angle = getstraightenangle(BW08)
 %BW08 = 1-BW08;
 BW08rot = imrotate(BW08,angle,'bicubic','crop');
+
+
 %BW08rot = 1-BW08rot;
-figure
-imshow(BW08rot);
-figure
+%figure
+%imshow(BW08rot);
+%figure
+
+BW08rot = 1-BW08rot;
+%figure
+%imshow(BW08rot);
+
+
 %--TEST FREDAG
 
 %
