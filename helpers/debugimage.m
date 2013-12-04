@@ -12,7 +12,10 @@ if debug && nargin > 0
     
     % Set the title of at least two arguments
     if nargin > 1
+        [ST, I] = dbstack(1);
         title = varargin{2};
+        title = strcat(': ', title);
+        title = strcat(ST(1).name, title);
         set(gcf,'name',title,'numbertitle','off')
     end
     

@@ -8,9 +8,8 @@ function strout = tnm034(Im)
 % The string must follow the pre-defined format, explained below. 
 % Your program code? 
 
-
 %% Settings
-debug = false;
+debug = true;
 hardcodedthreshold = 0.8;
 
 %% Preparations
