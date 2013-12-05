@@ -35,7 +35,7 @@ end
 
 sx = cutunder(1)-cutover(1)+5;
 
-staff = ones(sx,sy,n);
+staff = zeros(sx,sy,n);
 linepositions = zeros(5,n);
 bwstaffsout = ones(sx,sy,n);
 

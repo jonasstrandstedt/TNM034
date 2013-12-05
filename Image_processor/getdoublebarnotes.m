@@ -9,6 +9,7 @@ padding = 100;
 
 %% Preparations
 centroidsize = size(centroids);
+indices = 1:centroidsize(1);
 singlebar_centroids = zeros(centroidsize(1),1);
 doublebar_centroids = zeros(centroidsize(1),1);
 
@@ -88,12 +89,11 @@ for i=1:centroidsize(1)
 end
 
 % remove double
-centroids = removeindices(centroids, doublebar_centroids);
-centroidsize = size(centroids);
+doublebar_centroids(doublebar_centroids==0) = [];
+indices(doublebar_centroids) = [];
 
 %% One bar search
-for i=1:centroidsize(1)
-    
+for i=indices
     cx = int16(round(centroids(i,1)));
     cy = int16(round(centroids(i,2)));
     
@@ -148,8 +148,11 @@ end
 
 
 % remove double
-centroids = removeindices(centroids, singlebar_centroids);
-centroidsize = size(centroids);
+%centroids = removeindices(centroids, singlebar_centroids);
+tmpsingles = singlebar_centroids;
+tmpsingles(tmpsingles==0) = [];
+indices = 1:centroidsize(1);
+indices([tmpsingles; doublebar_centroids(:)]) = [];
 
 partsearch = addpadding(thin_cleaned, padding);
 
@@ -162,7 +165,7 @@ end
 
 %% Find single flags
 
-for i=1:centroidsize(1)
+for i=indices
     
     cx = int16(round(centroids(i,1)));
     cy = int16(round(centroids(i,2)));

@@ -50,6 +50,12 @@ for i=1:numberofstaffs
     %find the notes in the image
     morenotes = findNotes(staff(:,:,i), linepositions(:,i));
     notes = strcat(notes,'n', morenotes);
+    
+    if debug
+        disp(['current staff: ', morenotes]);
+        disp('Press ENTER for next staff..');
+        pause
+    end
 end
 
 %% Return the note string

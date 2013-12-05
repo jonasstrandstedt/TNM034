@@ -3,7 +3,7 @@ function [ num_bars ] = countbars( bw)
 %   bw is a black & white image
 
 %debugimage(bw,'BEfore labeling')
-bw = bwareaopen(bw, 10);
+bw = bwareaopen(bw, 13);
 nums = bwconncomp(bw);
 num_bars = nums.NumObjects;
 %bwlabelreturn = bwlabel(bw);
