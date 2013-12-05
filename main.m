@@ -31,7 +31,9 @@ expectations = {
     'nC2F2A2F2b2a2g2f2E2G2C2E2nC2F2A2F2b2a2g2f2E2G2C2E2nA2a2a2A2A2B2a2a2G2g2g2G2f2f2E2F2nA2a2a2A2A2B2A2G2G2F2E2',...
     'saknas',...
     'nC3A3c3e3G3f3a3B3f3g3A3a3G3e3f3D3e3c3nC3f3D3D3f3g3B3g3f3E3g3b3C4a3g3nF3e3d3E3d3c3D3c3b2C3a3c3F3d3C3e3f3F3E3nC3A3c3e3G3f3a3B3f3g3A3a3G3e3f3D3e3c3nC3A3e3e3G3f3a3B3f3g3A3a3G3e3f3D3e3c3nf3g3f3E3g3b3C4a3g3F3e3b3E3d3c3nD3c3B3C3c3F3d3C3F3E3'};
+result = expectations;
 ids = [1, 3, 5, 6, 8, 9, 10];
+
 if testall
 
     testsize = size(ids);
@@ -43,6 +45,7 @@ if testall
         im = imreadnorm(impath);
         teststr = tnm034(im);
         expstr = char(expectations(i));
+        result(i) = {teststr};
         
         if strcmp(teststr, expstr)
             outstr= strcat(outstr, ' success!');
@@ -68,5 +71,11 @@ if testall
             end
         end
         disp(outstr);
+    end
+    for i = 1:testsize(2)
+        resstr = strcat('result(',num2str(i),')');
+        expstr = strcat('expres(',num2str(i),')');
+        print(resstr, char(result(i)));
+        print(expstr, char(expectations(i)));
     end
 end
