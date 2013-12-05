@@ -8,10 +8,10 @@ function [notes] = findNotes(im, linelocations)
 %image, locates centroids for the found notes and classifies the notes.
 
 %% SETTINGS
-debug = true;
+debug = false;
 
 %% Preparations
-space = (linelocations(2)-linelocations(1))/2
+space = (linelocations(2)-linelocations(1))/2;
 
 %% Convert to binary
 level = graythresh(im);

@@ -1,7 +1,5 @@
 % Script calling the tnm034 functions
 
-%% Settings
-testall = true;
 
 %% Preparations
 % clear the screen and environment
@@ -11,6 +9,9 @@ clear all
 % add the folder helpers to the path so we can access the function
 addpath helpers
 addpath Image_processor
+
+%% Settings
+testall = true;
 
 %% Debug run
 if testall == false
