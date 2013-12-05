@@ -8,36 +8,41 @@ function [notes] = findNotes(im, linelocations)
 %image, locates centroids for the found notes and classifies the notes.
 
 %% SETTINGS
-debug = false;
+debug = true;
 
 %% Preparations
-space = (linelocations(2)-linelocations(1))/2;
+space = (linelocations(2)-linelocations(1))/2
 
 %% Convert to binary
 level = graythresh(im);
 bw = im2bw(im, level);
 bwinv = 1-bw;
 
+
+%% prepare the image before template matching
+thinned = bwmorph(bwinv, 'thin');
+imfixed = thinned;
+
+
 %% Template resizing
 template = imread('template1.png');
 level = graythresh(template);
 template = im2bw(template,level);
 template = 1-template;
-template = imresize(template,[2*space NaN]); 
+template = imresize(template,[2*space-2 NaN]); 
 
-C = normxcorr2(template, bwinv);
+C = normxcorr2(template, imfixed);
 C = im2bw(C, 0.65);
-C = bwmorph(C, 'dilate', 2);
+%C = bwmorph(C, 'dilate', 2);
 L = bwlabel(C,4);
 stats = regionprops(L,'centroid');
 centroids = cat(1, stats.Centroid);
 
 %% DEBUGGING
 if debug
-    debugimage(bwinv,'Image centroid is fetched from',@()plot(centroids(:,1),centroids(:,2),'b*'));
+    debugimage(imfixed,'Image centroid is fetched from',@()plot(centroids(:,1),centroids(:,2),'b*'));
     debugimage(C,'Image centroid is fetched from',@()plot(centroids(:,1),centroids(:,2),'b*'));
 end
-
 
 %% g-clef removal
 % create black image and project the intensities to the left.

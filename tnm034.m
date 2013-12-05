@@ -9,7 +9,7 @@ function strout = tnm034(Im)
 % Your program code? 
 
 %% Settings
-debug = true;
+debug = false;
 hardcodedthreshold = 0.8;
 
 %% Preparations
@@ -27,8 +27,8 @@ BW08 = 1-BW08;
 angle = getstraightenangle(BW08);
 BW08rot = imrotate(BW08,angle,'bicubic','crop');
 
-angle = getstraightenangle(BW);
-Imrot = imrotate(Im,angle,'bicubic','crop');
+%angle = getstraightenangle(BW);
+%Imrot = imrotate(Im,angle,'bicubic','crop');
 
 %compensating for white edge after rotating the image
 [rows, columns] = size(BW08rot);
@@ -36,7 +36,7 @@ BW08rot(1:10, :) = 0;
 BW08rot(rows-10:rows, :) = 0;
 BW08rot(:, 1:10) = 0;
 
-[staff,linepositions]= staffDivision(Imrot, BW08rot);%testar skicka in BW8rot
+[staff,linepositions]= staffDivision(BW08rot);%testar skicka in BW8rot
 staffsize = size(staff);
 numberofstaffs = staffsize(3);
 

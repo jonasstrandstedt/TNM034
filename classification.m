@@ -1,5 +1,5 @@
 function [ notes ] = classification( y_centroids, linelocations, eighths, space)
-%classifes the notes
+%classifies the notes
 
 
 notes = '';
@@ -50,8 +50,10 @@ for i = 1:length
            notes = strcat(notes,'G1');
    else 
            notes = strcat(notes,'-');
+   end
+   
    if i == eighths(counter)
-       notes(i) = lower(notes(i));
+       notes(i*2-1) = lower(notes(i*2-1));
        if(counter < numel(eighths))
            counter=counter+1;
        end

@@ -1,4 +1,4 @@
-function [staff, linepositions] = staffDivision(Im, BW)
+function [staff, linepositions] = staffDivision(BW)
 %UNTITLED2 Summary of this function goes here
 %   Im: input image is a "straightened" rgb image
 %   BW: input image is a blackandwhite "straightened image
@@ -11,8 +11,8 @@ function [staff, linepositions] = staffDivision(Im, BW)
 outlocations = findLines(BW);
 
 %save the size for Im
-sizeIm = size(Im);
-sy = sizeIm(2);
+sizeBW = size(BW);
+sy = sizeBW(2);
 
 % calculate the cut distance, for cropping the first staff from the
 % original image
@@ -41,20 +41,25 @@ bwstaffsout = ones(sx,sy,n);
 
 %make the im bw with a thresh of 0.8 to be able to use findLines on the
 %staffs 
-graystaffs =rgb2gray(Im);
-bwstaffs = im2bw(graystaffs, 0.8);
-bwstaffs = 1-bwstaffs;
+% graystaffs =rgb2gray(Im);
+% bwstaffs = im2bw(graystaffs, 0.8);
+% bwstaffs = 1-bwstaffs;
 
 
 % crop off the staffs and find the positions of the stafflines
 for i = 1:n
+%     h = cutunder(i) - cutover(i);
+%     staff(1:h+1,1:sy,i) = Im(cutover(i):cutunder(i),1:sy);
+%     bwstaffsout(1:h+1,1:sy,i) = bwstaffs(cutover(i):cutunder(i),1:sy);
+%     linepositions(:,i) = findLines(bwstaffsout(1:h+1,1:sy,i));
+
     h = cutunder(i) - cutover(i);
-    staff(1:h+1,1:sy,i) = Im(cutover(i):cutunder(i),1:sy);
-    bwstaffsout(1:h+1,1:sy,i) = bwstaffs(cutover(i):cutunder(i),1:sy);
-    linepositions(:,i) = findLines(bwstaffsout(1:h+1,1:sy,i));
+    staff(1:h+1,1:sy,i) = BW(cutover(i):cutunder(i),1:sy);
+    %bwstaffsout(1:h+1,1:sy,i) = BW(cutover(i):cutunder(i),1:sy);
+    linepositions(:,i) = findLines(staff(1:h+1,1:sy,i));
 
 end
-
+staff = 1 - staff;
 
 end
 
