@@ -9,7 +9,7 @@ function strout = tnm034(Im)
 % Your program code? 
 
 %% Settings
-debug = true;
+debug = false;
 hardcodedthreshold = 0.8;
 
 %% Preparations
