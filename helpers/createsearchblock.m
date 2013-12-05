@@ -15,7 +15,7 @@ linethickness = linedistance / 5;
 
 % UP RIGHT
 if strcmp(updown, 'up') && strcmp(rightleft, 'right') 
-    x = cx;
+    x = cx+2;
     y = cy - 2*linedistance;
     dx = linedistance;
     dy = -heightfactor*linedistance;
