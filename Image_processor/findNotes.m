@@ -34,9 +34,7 @@ template = imresize(template,[2*space NaN]);
 C = normxcorr2(template, imfixed);
 C2 = C;
 level = graythresh(C) + 0.5;
-%C = im2bw(C, 0.55);
 C = im2bw(C, level);
-%C = bwmorph(C, 'dilate', 2);
 L = bwlabel(C,4);
 stats = regionprops(L,'centroid');
 centroids = cat(1, stats.Centroid);
@@ -75,7 +73,6 @@ if (c1(1) - px) < (12*space)
 end
 
 %% Removing notes that are found two times
-%int16(round(centroids(:,1:2)))
 centroids_to_remove = [];
 for i = 1:size(centroids(:,1),1)-1
     cx1 = int16(round(centroids(i,1)));
@@ -89,13 +86,9 @@ for i = 1:size(centroids(:,1),1)-1
     end
 end
 centroids = removeindices(centroids, centroids_to_remove);
-%int16(round(centroids(:,1:2)))
 
 %% remove 1/16 notes
 [eighths, centroids_to_remove] = getdoublebarnotes(bwinv, centroids,linelocations);
-%centroids = removeindices(centroids, centroids_to_remove);
-
-
 
 %% DEBUGGING
 if debug
@@ -104,11 +97,7 @@ if debug
 end
 
 %% classify notes
-%dummie data
-%eighths= [1 2 3 4 5 6 7 8 9 10 11 12];
-
 y_centroids = centroids(:,2);
-
 notes = classification(y_centroids,linelocations, eighths, centroids_to_remove, space);
 
 

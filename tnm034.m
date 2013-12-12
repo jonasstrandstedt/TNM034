@@ -17,26 +17,18 @@ notes = '';
 
 % make BW image and invert
 grayscale = rgb2gray(Im);
-level = graythresh(grayscale);
-BW = im2bw(grayscale, level);
+BW = im2bw(grayscale, hardcodedthreshold);
 BW = 1-BW;
-
-%% TEST FREDAG(?)
-BW08 = im2bw(grayscale, hardcodedthreshold);
-BW08 = 1-BW08;
-angle = getstraightenangle(BW08);
-BW08rot = imrotate(BW08,angle,'bicubic','crop');
-
-%angle = getstraightenangle(BW);
-%Imrot = imrotate(Im,angle,'bicubic','crop');
+angle = getstraightenangle(BW);
+BWrot = imrotate(BW,angle,'bicubic','crop');
 
 %compensating for white edge after rotating the image
-[rows, columns] = size(BW08rot);
-BW08rot(1:10, :) = 0;
-BW08rot(rows-10:rows, :) = 0;
-BW08rot(:, 1:10) = 0;
+[rows, columns] = size(BWrot);
+BWrot(1:10, :) = 0;
+BWrot(rows-10:rows, :) = 0;
+BWrot(:, 1:10) = 0;
 
-[staff,linepositions]= staffDivision(BW08rot);%testar skicka in BW8rot
+[staff,linepositions]= staffDivision(BWrot);%testar skicka in BW8rot
 staffsize = size(staff);
 numberofstaffs = staffsize(3);
 
