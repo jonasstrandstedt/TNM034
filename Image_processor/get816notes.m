@@ -1,4 +1,4 @@
-function [ singlebar_centroids, doublebar_centroids] = getdoublebarnotes(BW, centroids, linelocations)
+function [ singlebar_centroids, doublebar_centroids] = get816notes(BW, centroids, linelocations)
 %UNTITLED3 Summary of this function goes here
 %Detailed explanation goes here
 

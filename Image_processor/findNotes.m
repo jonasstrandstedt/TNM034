@@ -88,7 +88,7 @@ end
 centroids = removeindices(centroids, centroids_to_remove);
 
 %% remove 1/16 notes
-[eighths, centroids_to_remove] = getdoublebarnotes(bwinv, centroids,linelocations);
+[eighths, centroids_to_remove] = get816notes(bwinv, centroids,linelocations);
 
 %% DEBUGGING
 if debug
