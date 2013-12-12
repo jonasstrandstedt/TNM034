@@ -49,7 +49,10 @@ for i=1:numberofstaffs
     
     %find the notes in the image
     morenotes = findNotes(staff(:,:,i), linepositions(:,i));
-    notes = strcat(notes,'n', morenotes);
+    if ~isempty(notes)
+        notes = strcat(notes,'n');
+    end
+    notes = strcat(notes, morenotes);
     
     if debug
         disp(['current staff: ', morenotes]);
