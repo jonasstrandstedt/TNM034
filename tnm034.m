@@ -53,8 +53,9 @@ for i=1:numberofstaffs
     
     if debug
         disp(['current staff: ', morenotes]);
-        disp('Press ENTER for next staff..');
+        disp('Press ENTER to close all figures and process the next staff..');
         pause
+        close all
     end
 end
 

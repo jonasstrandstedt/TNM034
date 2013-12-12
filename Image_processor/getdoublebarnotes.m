@@ -22,6 +22,8 @@ thin = removelines(thin_cleaned, 'vertical', 1);
 skel = bwareaopen(thin, 40);
 skel = removelines(skel, 'horizontal');
 partsearch =  skel;
+partsearch =  bwmorph(partsearch, 'thin');
+partsearch = removelines(partsearch, 'vertical', 1);
 
 %% Add padding to the partsearch image so we dont search outside the image
 partsearch = addpadding(partsearch, padding);
@@ -42,7 +44,7 @@ for i=1:centroidsize(1)
     % UP RIGHT
     [x, y, dx, dy] = createsearchblock(cx, cy, linedistance, 'up','right');
     noteblock = partsearch(y+dy:y, x:x+dx);
-    num_bars = countbars(noteblock);
+    num_bars = countbars(noteblock, linedistance);
     if num_bars > 1
         doublebar_centroids(i) = i;
         if debug
@@ -54,7 +56,7 @@ for i=1:centroidsize(1)
     % UP LEFT
     [x, y, dx, dy] = createsearchblock(cx, cy, linedistance, 'up','left');
     noteblock = partsearch(y+dy:y, x+dx:x);
-    num_bars = countbars(noteblock);
+    num_bars = countbars(noteblock, linedistance);
     if num_bars > 1
         doublebar_centroids(i) = i;
         if debug
@@ -66,7 +68,7 @@ for i=1:centroidsize(1)
     % DOWN RIGHT
     [x, y, dx, dy] = createsearchblock(cx, cy, linedistance, 'down','right');
     noteblock = partsearch(y:y+dy, x:x+dx);
-    num_bars = countbars(noteblock);
+    num_bars = countbars(noteblock, linedistance);
     if num_bars > 1
         doublebar_centroids(i) = i;
         if debug
@@ -78,7 +80,7 @@ for i=1:centroidsize(1)
     % DOWN LEFT
     [x, y, dx, dy] = createsearchblock(cx, cy, linedistance, 'down','left');
     noteblock = partsearch(y:y+dy, x+dx:x);
-    num_bars = countbars(noteblock);
+    num_bars = countbars(noteblock, linedistance);
     if num_bars > 1
         doublebar_centroids(i) = i;
         if debug
@@ -100,7 +102,7 @@ for i=indices
     % UP RIGHT
     [x, y, dx, dy] = createsearchblock(cx, cy, linedistance, 'up','right');
     noteblock = partsearch(y+dy:y, x:x+dx);
-    num_bars = countbars(noteblock);
+    num_bars = countbars(noteblock, linedistance);
     if num_bars == 1
         singlebar_centroids(i) = i;
         if debug
@@ -112,7 +114,7 @@ for i=indices
     % UP LEFT
     [x, y, dx, dy] = createsearchblock(cx, cy, linedistance, 'up','left');
     noteblock = partsearch(y+dy:y, x+dx:x);
-    num_bars = countbars(noteblock);
+    num_bars = countbars(noteblock, linedistance);
     if num_bars == 1
         singlebar_centroids(i) = i;
         if debug
@@ -124,7 +126,7 @@ for i=indices
     % DOWN RIGHT
     [x, y, dx, dy] = createsearchblock(cx, cy, linedistance, 'down','right');
     noteblock = partsearch(y:y+dy, x:x+dx);
-    num_bars = countbars(noteblock);
+    num_bars = countbars(noteblock, linedistance);
     if num_bars == 1
         singlebar_centroids(i) = i;
         if debug
@@ -136,7 +138,7 @@ for i=indices
     % DOWN LEFT
     [x, y, dx, dy] = createsearchblock(cx, cy, linedistance, 'down','left');
     noteblock = partsearch(y:y+dy, x+dx:x);
-    num_bars = countbars(noteblock);
+    num_bars = countbars(noteblock, linedistance);
     if num_bars == 1
         singlebar_centroids(i) = i;
         if debug
@@ -154,6 +156,7 @@ tmpsingles(tmpsingles==0) = [];
 indices = 1:centroidsize(1);
 indices([tmpsingles; doublebar_centroids(:)]) = [];
 
+thin_cleaned = removelines(thin_cleaned, 'horizontal');
 partsearch = addpadding(thin_cleaned, padding);
 
 %% DEBUGGING
@@ -173,7 +176,7 @@ for i=indices
     % UP RIGHT
     [x, y, dx, dy] = createsearchblock(cx, cy, linedistance, 'up','right');
     noteblock = partsearch(y+dy:y, x:x+dx);
-    num_bars = countbars(noteblock);
+    num_bars = countbars(noteblock, linedistance);
     if num_bars > 0
         singlebar_centroids(i) = i;
         if debug
@@ -184,7 +187,7 @@ for i=indices
     % DOWN RIGHT
     [x, y, dx, dy] = createsearchblock(cx, cy, linedistance, 'down','right');
     noteblock = partsearch(y:y+dy, x:x+dx);
-    num_bars = countbars(noteblock);
+    num_bars = countbars(noteblock, linedistance);
     if num_bars > 0
         singlebar_centroids(i) = i;
         if debug
@@ -192,12 +195,6 @@ for i=indices
         end
         continue;
     end
-end
-
-%% DEBUGGING
-if debug
-    pause
-    close all
 end
 
 end

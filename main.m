@@ -11,16 +11,8 @@ addpath helpers
 addpath Image_processor
 
 %% Settings
-testall = true;
-
-%% Debug run
-if testall == false
-    im = imreadnorm('Images_Training/im1s.jpg');
-    im_txt = tnm034(im);
-
-    %print the notes
-    print('Notes',im_txt,':\n');
-end
+ids = [1, 3, 5, 6, 8, 9, 10];
+%ids = [1];
 
 %% Test run
 expectations = {
@@ -32,58 +24,55 @@ expectations = {
     'saknas',...
     'nC3A3c3e3G3f3a3B3f3g3A3a3G3e3f3D3e3c3nC3f3D3D3f3g3B3g3f3E3g3b3C4a3g3nF3e3d3E3d3c3D3c3b2C3a3c3F3d3C3e3f3F3E3nC3A3c3e3G3f3a3B3f3g3A3a3G3e3f3D3e3c3nC3A3e3e3G3f3a3B3f3g3A3a3G3e3f3D3e3c3nf3g3f3E3g3b3C4a3g3F3e3b3E3d3c3nD3c3B3C3c3F3d3C3F3E3'};
 result = expectations;
-ids = [1, 3, 5, 6, 8, 9, 10];
 
-if testall
+testsize = size(ids);
+for i = 1:testsize(2)
 
-    testsize = size(ids);
-    for i = 1:testsize(2)
+    id = ids(i);
+    impath = strcat('Images_Training/im',num2str(id),'s.jpg');
+    outstr = strcat('Testing im',num2str(id),'s.jpg: ');
+    im = imreadnorm(impath);
+    teststr = tnm034(im);
+    expstr = char(expectations(i));
+    sizeteststr = size(teststr);
+    sizeexpectations = size(expstr);
+    result(i) = {teststr};
 
-        id = ids(i);
-        impath = strcat('Images_Training/im',num2str(id),'s.jpg');
-        outstr = strcat('Testing im',num2str(id),'s.jpg: ');
-        im = imreadnorm(impath);
-        teststr = tnm034(im);
-        expstr = char(expectations(i));
-        sizeteststr = size(teststr);
-        sizeexpectations = size(expstr);
-        result(i) = {teststr};
-        
-        if strcmp(teststr, expstr)
-            outstr= strcat(outstr, ' success!');
+    if strcmp(teststr, expstr)
+        outstr= strcat(outstr, ' success!');
+    else
+        if strcmpi(teststr, expstr)
+            outstr = strcat(outstr, ' right notes but wrong case!');
         else
-            if strcmpi(teststr, expstr)
-                outstr = strcat(outstr, ' right notes but wrong case!');
-            else
-                for j = 1:min(sizeteststr(2),sizeexpectations(2))
-                    if strcmp(teststr(j), expstr(j)) == 0
-                        if strcmpi(teststr(j), expstr(j)) == 0
-                            outstr = strcat(outstr, ' FAIL[',num2str(j),']');
-                            break;
-                        else
-                            outstr = strcat(outstr, ' [',num2str(j),']');
-                        end
-                
+            for j = 1:min(sizeteststr(2),sizeexpectations(2))
+                if strcmp(teststr(j), expstr(j)) == 0
+                    if strcmpi(teststr(j), expstr(j)) == 0
+                        outstr = strcat(outstr, ' FAIL[',num2str(j),']');
+                        break;
+                    else
+                        outstr = strcat(outstr, ' [',num2str(j),']');
                     end
-                    
+
                 end
-                
+
             end
+
         end
-        percentmatch = 0;
-        for j = 1:min(sizeteststr(2),sizeexpectations(2))
-            if strcmp(teststr(j), expstr(j)) == 1
-                percentmatch = percentmatch +1;
-            end
+    end
+    percentmatch = 0;
+    for j = 1:min(sizeteststr(2),sizeexpectations(2))
+        if strcmp(teststr(j), expstr(j)) == 1
+            percentmatch = percentmatch +1;
         end
-        outstr = [outstr, ' [',num2str(percentmatch),'/',num2str(sizeexpectations(2)),']']; 
-        disp(outstr);
     end
-    for i = 1:testsize(2)
-        id = ids(i);
-        resstr = strcat('result(im',num2str(id),'s.jpg)');
-        expstr = strcat('expres(im',num2str(id),'s.jpg)');
-        print(resstr, char(result(i)));
-        print(expstr, char(expectations(i)));
-    end
+    outstr = [outstr, ' [',num2str(percentmatch),'/',num2str(sizeexpectations(2)),']']; 
+    disp(outstr);
 end
+for i = 1:testsize(2)
+    id = ids(i);
+    resstr = strcat('result(im',num2str(id),'s.jpg)');
+    expstr = strcat('expres(im',num2str(id),'s.jpg)');
+    print(resstr, char(result(i)));
+    print(expstr, char(expectations(i)));
+end
+

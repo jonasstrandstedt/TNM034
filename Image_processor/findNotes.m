@@ -25,14 +25,17 @@ imfixed = thinned;
 
 
 %% Template resizing
-template = imread('template1.png');
+template = im2double(imread('template1.png'));
 level = graythresh(template);
 template = im2bw(template,level);
 template = 1-template;
-template = imresize(template,[2*space-2 NaN]); 
+template = imresize(template,[2*space NaN]); 
 
 C = normxcorr2(template, imfixed);
-C = im2bw(C, 0.65);
+C2 = C;
+level = graythresh(C) + 0.5;
+%C = im2bw(C, 0.55);
+C = im2bw(C, level);
 %C = bwmorph(C, 'dilate', 2);
 L = bwlabel(C,4);
 stats = regionprops(L,'centroid');
@@ -40,8 +43,10 @@ centroids = cat(1, stats.Centroid);
 
 %% DEBUGGING
 if debug
-    %debugimage(imfixed,'Image centroid is fetched from',@()plot(centroids(:,1),centroids(:,2),'b*'));
-    %debugimage(C,'Image centroid is fetched from',@()plot(centroids(:,1),centroids(:,2),'b*'));
+    %debugimage(imfixed,'Image centroids is fetched from',@()plot(centroids(:,1),centroids(:,2),'b*'));
+    %debugimage(C,'Result image centroids is fetched from',@()plot(centroids(:,1),centroids(:,2),'b*'));
+    debugimage(C2,'Result image centroids is fetched from');
+    debugimage(C,'Result image centroids is fetched from');
 end
 
 %% g-clef removal
@@ -69,6 +74,7 @@ if (c1(1) - px) < (12*space)
     centroids(1,:)= [];
 end
 
+%% Removing notes that are found two times
 %int16(round(centroids(:,1:2)))
 centroids_to_remove = [];
 for i = 1:size(centroids(:,1),1)-1

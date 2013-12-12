@@ -19,6 +19,7 @@ if debug
     % for h is for vizualization.
     h = H/max(max(H));
     debugimage(h, 'Hough transform visualization');
+    %pause
 end
 
 %% Set the return value
